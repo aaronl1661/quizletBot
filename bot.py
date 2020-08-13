@@ -20,8 +20,6 @@ keyphrase = "\"" + re.sub('[!,*)@#%(&$_?.^]"', '', unfiltered) + "\""
 query = keyphrase + "\"quizlet\""
 for results in search(query, tld='com', lang='en', num=10, start=0, stop=url_num, pause=2.0):
     URLS.append(results)
-    print(results)
-
 #initializes the webdriver
 options = webdriver.ChromeOptions()
 options.add_argument('ignore-certificate-errors-spki-list')
