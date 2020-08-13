@@ -26,7 +26,7 @@ for results in search(query, tld='com', lang='en', num=10, start=0, stop=url_num
 options = webdriver.ChromeOptions()
 options.add_argument('ignore-certificate-errors-spki-list')
 options.add_argument('ignore-ssl-errors')
-options.add_argument('headless')
+#options.add_argument('headless')
 driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
 results = []
 #parses through every url
@@ -40,18 +40,31 @@ for i,url in enumerate(URLS):
     soup = BeautifulSoup(src, "html.parser")
 
     location = None
-
-    for i, a in enumerate(soup.findAll('span', {"class": "TermText notranslate lang-en" })):
-        if fuzz.ratio(a.text, keyphrase) > 60:
-            terms.append(a.text)
-            location = i
-        #add so that the definition can be flipped                
-        if location is not None:
-            if i == location + 1:
-                definitions.append(a.text)
-    result.append(terms)
+    flashcards = soup.findAll('span', {"class": "TermText notranslate lang-en" })
+    for term, definition in zip(flashcards, flashcards[1:]):
+        #print(term.text)
+        if fuzz.ratio(term.text, keyphrase) > 60:
+            terms.append(term.text)
+            #print(term.text)
+            definitions.append(definition.text)
+        elif fuzz.ratio(definition.text, keyphrase) > 60:
+            terms.append(term.text)
+            #print(term.text)
+            definitions.append(definition.text)
+        else:
+            continue
     result.append(definitions)
     results.append(result)
+    # for i, a in (0, enumerate():
+    #     if fuzz.ratio(a.text, keyphrase) > 60:
+    #         terms.append(a.text)
+    #         location = i
+    #     #add so that the definition can be flipped                
+    #     if location is not None:
+    #         if i == location + 1:
+    #             definitions.append(a.text)
+    #result.append(terms)
+
 
 driver.close()
 os.system('cls')
