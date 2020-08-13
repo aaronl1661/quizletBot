@@ -16,24 +16,26 @@ url_num = 10 #input("How many websites to search? Input a digit please. ")
 #Searches for URLS
 URLS = []
 unfiltered = input("What's the question? ")
-keyphrase = "\"" + re.sub('[!,*)@#%(&$_?.^]', '', unfiltered) + "\""
-print(keyphrase)
+keyphrase = "\"" + re.sub('[!,*)@#%(&$_?.^]"', '', unfiltered) + "\""
 query = keyphrase + "\"quizlet\""
 for results in search(query, tld='com', lang='en', num=10, start=0, stop=url_num, pause=2.0):
     URLS.append(results)
+    print(results)
 
 #initializes the webdriver
 options = webdriver.ChromeOptions()
 options.add_argument('ignore-certificate-errors-spki-list')
 options.add_argument('ignore-ssl-errors')
-#options.add_argument('headless')
+options.add_argument('headless')
 driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
 results = []
 #parses through every url
 for i,url in enumerate(URLS):
+    print(url)
     terms=[]
     definitions = []
     result = []
+    correct_flashcard = []
     driver.get(url)
     src = driver.page_source
 
@@ -41,19 +43,18 @@ for i,url in enumerate(URLS):
 
     location = None
     flashcards = soup.findAll('span', {"class": "TermText notranslate lang-en" })
-    for term, definition in zip(flashcards, flashcards[1:]):
-        #print(term.text)
-        if fuzz.ratio(term.text, keyphrase) > 60:
-            terms.append(term.text)
-            #print(term.text)
-            definitions.append(definition.text)
-        elif fuzz.ratio(definition.text, keyphrase) > 60:
-            terms.append(term.text)
-            #print(term.text)
-            definitions.append(definition.text)
+    for term, definition in zip(flashcards[::2], flashcards[1::2]):
+        if fuzz.ratio(term.text, keyphrase) > 80:
+            correct_flashcard.append(term.text)
+            correct_flashcard.append(definition.text)
+        elif fuzz.ratio(definition.text, keyphrase) > 80:
+            correct_flashcard.append(definition.text)
+            correct_flashcard.append(term.text)
         else:
             continue
-    result.append(definitions)
+    result.append(correct_flashcard)
+    #result.append(terms)
+    #result.append(definitions)
     results.append(result)
     # for i, a in (0, enumerate():
     #     if fuzz.ratio(a.text, keyphrase) > 60:
@@ -69,8 +70,5 @@ for i,url in enumerate(URLS):
 driver.close()
 os.system('cls')
 for result in results:
-    if result != [[],[]]:
-        print(result)
-
-
-#https://repl.it/@DevinShende/Quizlet-Scraper#main.py
+    print(result)
+    print()
