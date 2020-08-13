@@ -6,7 +6,6 @@ import requests
 from fuzzywuzzy import fuzz
 import os
 from contextlib import suppress
-import regex as re
 
 #with suppress(Exception):
 url_num = 10 #input("How many websites to search? Input a digit please. ")
@@ -68,5 +67,6 @@ for i,url in enumerate(URLS):
 driver.close()
 os.system('cls')
 for result in results:
-    print(result)
-    print()
+    if result != [[]]:
+        print(result)
+        print()
