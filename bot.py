@@ -10,13 +10,19 @@ import regex as re
 from config import key, current_machine_id
 from selenium.webdriver.common.keys import Keys
 from time import sleep
-from multiprocessing import Process
+from _thread import start_new_thread
+
 
 #Windows Version 1.0.0
 
+#multi threading functions
+def open_tab(url, driver):
+    js_string = "window.open('" + urls + "'); "
+    driver.execute_script(js_string)
+    return True
 
-
-
+def parse_tab(driver):
+    return True
 
 if current_machine_id == key:
 #with suppress(Exception):
@@ -41,17 +47,20 @@ if current_machine_id == key:
     driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
     results = []
     #parses through every url
-    print(len(URLS))
+
     for i, urls in enumerate(URLS):
-        js_string = "window.open('" + urls + "'); "
-        driver.execute_script(js_string)
-        print("new tab")
+        # js_string = "window.open('" + urls + "'); "
+        # driver.execute_script(js_string)
+        # print("new tab")
+        print(urls)
+        start_new_thread(open_tab, (urls, driver))
+        sleep(.1)
         # driver.switch_to.window(driver.window_handles[i])
-        sleep(1)
+        # sleep(1)
         # driver.execute_script("window.open('your url','_blank');")
         # driver.get(urls)
     for i, urls in enumerate(URLS):
-        driver.switch_to.window(driver.window_handles[i])    
+        driver.switch_to.window(driver.window_handles[i])
         print(i)
         terms=[]
         definitions = []
