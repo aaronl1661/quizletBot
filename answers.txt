@@ -1,0 +1,25 @@
+2
+[[]]
+[['What are the first 4 civilizations?', 'Mesopotamia, Egypt, Indus River Valley, China River Valley.']]
+[['What are the first 4 civilizations', 'Mesopotamia, Egypt, India, China']]
+[['What are the first 4 civilizations', 'Mespotamia Land between two rivers (Tigris and euphrates rivers), egypt (Nile river), India (indus river), China/xia dynasty (yellow river)']]
+4
+[[]]
+[['What are the first 4 civilizations?', 'Mesopotamia, Egypt, Indus River Valley, China River Valley.']]
+[['What are the first 4 civilizations', 'Mesopotamia, Egypt, India, China']]
+[['What are the first 4 civilizations', 'Mespotamia Land between two rivers (Tigris and euphrates rivers), egypt (Nile river), India (indus river), China/xia dynasty (yellow river)']]
+3
+[[]]
+[['What are the first 4 civilizations?', 'Mesopotamia, Egypt, Indus River Valley, China River Valley.']]
+[['What are the first 4 civilizations', 'Mesopotamia, Egypt, India, China']]
+[['What are the first 4 civilizations', 'Mespotamia Land between two rivers (Tigris and euphrates rivers), egypt (Nile river), India (indus river), China/xia dynasty (yellow river)']]
+1
+[[]]
+[['What are the first 4 civilizations?', 'Mesopotamia, Egypt, Indus River Valley, China River Valley.']]
+[['What are the first 4 civilizations', 'Mesopotamia, Egypt, India, China']]
+[['What are the first 4 civilizations', 'Mespotamia Land between two rivers (Tigris and euphrates rivers), egypt (Nile river), India (indus river), China/xia dynasty (yellow river)']]
+5
+[[]]
+[['What are the first 4 civilizations?', 'Mesopotamia, Egypt, Indus River Valley, China River Valley.']]
+[['What are the first 4 civilizations', 'Mesopotamia, Egypt, India, China']]
+[['What are the first 4 civilizations', 'Mespotamia Land between two rivers (Tigris and euphrates rivers), egypt (Nile river), India (indus river), China/xia dynasty (yellow river)']]

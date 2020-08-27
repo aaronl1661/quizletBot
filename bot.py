@@ -17,89 +17,127 @@ import datetime
 
 #Windows Version 1.0.0
 
+#Global Variables
+total_results = []
+results = []
 #multi threading functions
 def open_tab(url, driver):
-    js_string = "window.open('" + urls + "'); "
+    js_string = "window.open('" + url + "'); "
     driver.execute_script(js_string)
     return True
-results = []
-def parse_tab(i ,driver):
-    driver.switch_to.window(driver.window_handles[i])
-    print('getting source')
-    print(driver.window_handles[i])
+
+def parse_tab(results, driver, keyphrase):
     src = driver.page_source
-    print('src recieved and now parsing')
     soup = BeautifulSoup(src, "lxml")
-    print('parsing finished')
     flashcards = soup.findAll('span', {"class": "TermText notranslate lang-en" })
-    print('found flashcards')
     result = []
     correct_flashcard = []
     for term, definition in zip(flashcards[::2], flashcards[1::2]):
-        if fuzz.ratio(term.text, keyphrase) > 80:
+        if fuzz.ratio(term.text, keyphrase) > 85:
             correct_flashcard.append(term.text)
             correct_flashcard.append(definition.text)
-        elif fuzz.ratio(definition.text, keyphrase) > 80:
+        elif fuzz.ratio(definition.text, keyphrase) > 85:
             correct_flashcard.append(definition.text)
             correct_flashcard.append(term.text)
         else:
             continue
     result.append(correct_flashcard)
     results.append(result)
-    print(result)
-    return result
-
-if current_machine_id == key:
-#with suppress(Exception):
+    return True
+def question_answer(i, unfiltered):
+    results = [i + 1]
     url_num = 5 #input("How many websites to search? Input a digit please. ")
     # while url_num.isdigit() is not True:
     #     url_num = input("Pick a digit not a word.")
     # url_num = int(url_num)
     #Searches for URLS
     URLS = []
-    unfiltered = input("What's the question? ")
+
     keyphrase = "\"" + re.sub('[!,*)@#%(&$_?.^]"', '', unfiltered) + "\""
     query = keyphrase + "\"quizlet\""
-    for results in search(query, tld='com', lang='en', num=10, start=0, stop=url_num, pause=2.0):
-        URLS.append(results)
+    for url in search(query, tld='com', lang='en', num=10, start=0, stop=url_num, pause=2.0):
+        URLS.append(url)
 
     
     #initializes the webdriver
     options = webdriver.ChromeOptions()
     options.add_argument('ignore-certificate-errors-spki-list')
     options.add_argument('ignore-ssl-errors')
-    # options.add_argument('--headless')
+    # options.add_argument("--headless")
     #options.add_argument('--disable_gpu')
     driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
-    results = []
+    # driver.add_cookie({"name": "app_session_id", "value": "adc19a7b-7506-4364-a4a8-733906d6602e"})
     #parses through every url
 
     for i, urls in enumerate(URLS):
         # js_string = "window.open('" + urls + "'); "
         # driver.execute_script(js_string)
         # print("new tab")
-        print(urls)
         start_new_thread(open_tab, (urls, driver))
         sleep(.1)
         # driver.switch_to.window(driver.window_handles[i])
         # sleep(1)
         # driver.execute_script("window.open('your url','_blank');")
         # driver.get(urls)
+    print("tabs open")
     threads = []
     for i in range(0, len(URLS)):
-        print(datetime.time())
-        process = Thread(target=parse_tab, args=[i ,driver])
+        # print('loop entered')
+        driver.switch_to.window(driver.window_handles[i])
+        print('tab switched')
+        process = Thread(target=parse_tab, args=[results, driver, keyphrase])
+        # print('thread created')
         process.start()
+        # print('thread started')
         threads.append(process)
 
         # start_new_thread(parse_tab, (driver,))
     for process in threads:
         process.join()
     driver.close()
+    total_results.append(results)
+    return True
+
+
+
+#START OF MAIN 
+
+if current_machine_id == key:
+#with suppress(Exception):
+    number_of_questions = input("How many questions? ")
+    while number_of_questions.isdigit() is not True:
+        if type(number_of_questions) is int:
+            break
+        number_of_questions = input("Pick a digit not a word.")
+    number_of_questions = int(number_of_questions)
     
+    threads = []
+    all_questions = []
+    for i in range(0, number_of_questions):
+        unfiltered = input("What's the question? ")
+        all_questions.append(unfiltered)
+    for i, question in enumerate(all_questions) :
+        process = Thread(target=question_answer, args=[i , question])
+        process.start()
+        threads.append(process)
+    for process in threads:
+        process.join()
+
     os.system('cls')
-    print('done')
-    print(results)
+    print('done !')
+    temp_result = []
+    # for i in range(0, len(total_results) - 1):
+    #     if total_results[i + 1][0] < total_results[i][0]:
+    #         temp_result.extend(total_results[i])
+    #         del(total_results[i])
+    #         total_results[i].extend(total_results[i + 1])
+    #         del(total_results[i +1])
+    #         total_results[i +1 ].extend(temp_result)
+    f = open("answers.txt", "w")
+    for results in total_results:
+        for result in results:
+            print(result, file=f)
+    f.close()
     exit()
     # os.system('cls')
     # for result in results:
