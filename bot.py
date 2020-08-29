@@ -68,7 +68,7 @@ def question_answer(i, unfiltered):
     # driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
     # driver.add_cookie({"name": "app_session_id", "value": "adc19a7b-7506-4364-a4a8-733906d6602e"})
     #parses through every url
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox
 
     for i, urls in enumerate(URLS):
         # js_string = "window.open('" + urls + "'); "
@@ -87,7 +87,7 @@ def question_answer(i, unfiltered):
         driver.switch_to.window(driver.window_handles[i])
         print('tab switched')
         process = Thread(target=parse_tab, args=[results, driver, keyphrase])
-        print('thread created')
+        # print('thread created')
         process.start()
         # print('thread started')
         threads.append(process)
@@ -186,7 +186,7 @@ if current_machine_id == key:
     for process in threads:
         process.join()
 
-    # os.system('cls')
+    os.system('cls')
     print('done !')
     temp_result = []
     # for i in range(0, len(total_results) - 1):

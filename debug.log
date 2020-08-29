@@ -9171,6 +9171,7 @@
 [0825/162437.348:ERROR:exception_snapshot_win.cc(98)] thread ID 18268 not found in process
 [0825/162437.360:ERROR:process_reader_win.cc(123)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights. (0xc0000022)
 [0825/162437.360:ERROR:exception_snapshot_win.cc(98)] thread ID 19420 not found in process
+<<<<<<< HEAD
 [0826/230719.317:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
 [0826/230719.375:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
 [0826/230719.375:ERROR:process_reader_win.cc(151)] SuspendThread: Access is denied. (0x5)
@@ -11158,3 +11159,5 @@
 [0829/145012.634:ERROR:process_info.cc(556)] ReadMemoryInfo failed
 [0829/145012.634:ERROR:process_memory_win.cc(39)] Failed to initialize ProcessInfo.
 [0829/145012.634:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+=======
+>>>>>>> parent of 9e37275... did multithreading using multiple webdrivers. going to test with only
