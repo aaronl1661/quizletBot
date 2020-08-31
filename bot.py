@@ -22,6 +22,7 @@ import math
 #Global Variables
 total_results = []
 results = []
+
 #multi threading functions
 def open_tab(url, driver):
     # js_string = "window.open('" + url + "'); "
@@ -118,65 +119,9 @@ def question_answer(i, unfiltered):
     total_results.append(results)
     return True
 
-def question_answer_same_driver(i, unfiltered, driver):
-    results = [i + 1]
-    tracking = 0
-    url_num = 5 #input("How many websites to search? Input a digit please. ")
-    # while url_num.isdigit() is not True:
-    #     url_num = input("Pick a digit not a word.")
-    # url_num = int(url_num)
-    #Searches for URLS
-    URLS = []
-
-    keyphrase = "\"" + re.sub('[!,*)@#%(&$_?.^]"', '', unfiltered) + "\""
-    query = keyphrase + "\"quizlet\""
-    for url in search(query, tld='com', lang='en', num=10, start=0, stop=url_num, pause=2.0):
-        URLS.append(url)
-
-    
-    #initializes the webdriver
-    # options = webdriver.ChromeOptions()
-    # options.add_argument('ignore-certificate-errors-spki-list')
-    # options.add_argument('ignore-ssl-errors')
-    # # options.add_argument("--headless")
-    # #options.add_argument('--disable_gpu')
-    # driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
-    # driver.add_cookie({"name": "app_session_id", "value": "adc19a7b-7506-4364-a4a8-733906d6602e"})
-    #parses through every url
-
-    for i, urls in enumerate(URLS):
-        # js_string = "window.open('" + urls + "'); "
-        # driver.execute_script(js_string)
-        # print("new tab")
-        start_new_thread(open_tab, (urls, driver))
-        sleep(.1)
-        # driver.switch_to.window(driver.window_handles[i])
-        # sleep(1)
-        # driver.execute_script("window.open('your url','_blank');")
-        # driver.get(urls)
-    print("tabs open")
-    threads = []
-    for i in range(0, len(URLS)):
-        # print('loop entered')
-        driver.switch_to.window(driver.window_handles[i + (len(URLS) * tracking)])
-        print('tab switched')
-        print(driver.current_url)
-        process = Thread(target=parse_tab, args=[results, driver, keyphrase])
-        # print('thread created')
-        process.start()
-        # print('thread started')
-        threads.append(process)
-
-        # start_new_thread(parse_tab, (driver,))
-    for process in threads:
-        process.join()
-    driver.close()
-    total_results.append(results)
-    return True
-
 #START OF MAIN 
 
-if current_machine_id == key:
+if current_machine_id == key :
 #with suppress(Exception):
     number_of_questions = input("How many questions? ")
     while number_of_questions.isdigit() is not True:
@@ -231,6 +176,7 @@ if current_machine_id == key:
                 print(result, file=f)
     f.close()
     exit()
-
+else:
+    print("You thought you could copy the file and get away with it?")
 # https://testdriven.io/blog/building-a-concurrent-web-scraper-with-python-and-selenium/
 # https://stackoverflow.com/questions/47543795/what-is-the-fastest-way-to-open-urls-in-new-tabs-via-selenium-python
