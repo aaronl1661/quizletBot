@@ -20,7 +20,10 @@ if text.find("key = '") == -1:
     os.system('del bot.py')
     os.rename('newfile.txt', 'bot.py')
 py.compile('bot.py')
-os.system('attrib +s +h +r config.py')
+# os.system('attrib +s +h +r config.py')
 # os.system('del /f .\setup.py')
 # os.system('del /f .\bot.py')
+os.system('README.txt')
+exit()
+
 

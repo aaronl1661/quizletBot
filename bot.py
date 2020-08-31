@@ -161,15 +161,17 @@ if current_machine_id == key :
             process.join()
 
     # os.system('cls')
-    temp_result = []
-    # for i in range(0, len(total_results) - 1):
-    #     if total_results[i + 1][0] < total_results[i][0]:
-    #         temp_result.extend(total_results[i])
-    #         del(total_results[i])
-    #         total_results[i].extend(total_results[i + 1])
-    #         del(total_results[i +1])
-    #         total_results[i +1 ].extend(temp_result)
-    f = open("answers.txt", "w")
+    # temp_result = []
+    # for i in range(0, len(total_results)):
+    #     for j in range(0, len(total_results)):
+    #         if total_results[i][0] == i + 1:
+    #             print("entered")
+    #             temp_result.append(total_results[i])
+    #             break
+    # print(temp_result)
+    print("DONE!")
+    f = open("answers.txt", "a+")
+    print("\n", file=f)
     for results in total_results:
         for result in results:
             if result != [[]]:
