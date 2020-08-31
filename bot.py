@@ -1,3 +1,4 @@
+key = '4C4C4544-0058-4410-8054-B7C04F375631'
 from selenium import webdriver
 from googlesearch import search
 from bs4 import BeautifulSoup
@@ -7,7 +8,7 @@ from fuzzywuzzy import fuzz
 import os
 from contextlib import suppress
 import regex as re
-from config import key, current_machine_id
+# from config import key, current_machine_id
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from _thread import start_new_thread
@@ -16,13 +17,13 @@ from multiprocessing.pool import ThreadPool
 import datetime
 from selenium.webdriver.firefox.options import Options
 import math
-
+import subprocess
 #Windows Version 1.0.0
 
 #Global Variables
 total_results = []
 results = []
-
+current_machine_id = subprocess.check_output('wmic csproduct get uuid').decode().split('\n')[1].strip()
 #multi threading functions
 def open_tab(url, driver):
     # js_string = "window.open('" + url + "'); "
@@ -160,7 +161,6 @@ if current_machine_id == key :
             process.join()
 
     # os.system('cls')
-    print('done !')
     temp_result = []
     # for i in range(0, len(total_results) - 1):
     #     if total_results[i + 1][0] < total_results[i][0]:
@@ -175,6 +175,7 @@ if current_machine_id == key :
             if result != [[]]:
                 print(result, file=f)
     f.close()
+    os.system('answers.txt')
     exit()
 else:
     print("You thought you could copy the file and get away with it?")
