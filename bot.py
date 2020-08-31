@@ -14,6 +14,8 @@ from _thread import start_new_thread
 from threading import Thread
 from multiprocessing.pool import ThreadPool
 import datetime
+from selenium.webdriver.firefox.options import Options
+import math
 
 #Windows Version 1.0.0
 
@@ -22,21 +24,27 @@ total_results = []
 results = []
 #multi threading functions
 def open_tab(url, driver):
-    js_string = "window.open('" + url + "'); "
-    driver.execute_script(js_string)
+    # js_string = "window.open('" + url + "'); "
+    # driver.execute_script(js_string)
+
     return True
 
 def parse_tab(results, driver, keyphrase):
     src = driver.page_source
+    # print('src', src)
     soup = BeautifulSoup(src, "lxml")
+    # print('soup', soup)
     flashcards = soup.findAll('span', {"class": "TermText notranslate lang-en" })
+    # print("flashcards")
+    # print(flashcards)
+    # print(driver.current_url)
     result = []
     correct_flashcard = []
     for term, definition in zip(flashcards[::2], flashcards[1::2]):
-        if fuzz.ratio(term.text, keyphrase) > 85:
+        if fuzz.token_sort_ratio(term.text, keyphrase) > 85:
             correct_flashcard.append(term.text)
             correct_flashcard.append(definition.text)
-        elif fuzz.ratio(definition.text, keyphrase) > 85:
+        elif fuzz.token_sort_ratio(definition.text, keyphrase) > 85:
             correct_flashcard.append(definition.text)
             correct_flashcard.append(term.text)
         else:
@@ -68,24 +76,35 @@ def question_answer(i, unfiltered):
     # driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
     # driver.add_cookie({"name": "app_session_id", "value": "adc19a7b-7506-4364-a4a8-733906d6602e"})
     #parses through every url
-    driver = webdriver.Firefox
-
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(options=options)
+    # tab_threads = []
     for i, urls in enumerate(URLS):
         # js_string = "window.open('" + urls + "'); "
         # driver.execute_script(js_string)
         # print("new tab")
-        start_new_thread(open_tab, (urls, driver))
-        sleep(.1)
+            # process = Thread(target=open_tab, args=[urls,driver])
+            # # start_new_thread(open_tab, (urls, driver))
+            # process.start()
+            # tab_threads.append(process)
+            # sleep(.1)
+        driver.switch_to.window(driver.window_handles[i])
+        driver.get(urls)
+        driver.execute_script("window.open(''); ")
+
         # driver.switch_to.window(driver.window_handles[i])
         # sleep(1)
         # driver.execute_script("window.open('your url','_blank');")
         # driver.get(urls)
+    # for process in tab_threads:
+    #     process.join()
     print("tabs open")
+    # sleep(3)
     threads = []
     for i in range(0, len(URLS)):
         # print('loop entered')
         driver.switch_to.window(driver.window_handles[i])
-        print('tab switched')
         process = Thread(target=parse_tab, args=[results, driver, keyphrase])
         # print('thread created')
         process.start()
@@ -95,7 +114,7 @@ def question_answer(i, unfiltered):
         # start_new_thread(parse_tab, (driver,))
     for process in threads:
         process.join()
-    driver.close()
+    driver.quit()
     total_results.append(results)
     return True
 
@@ -167,10 +186,19 @@ if current_machine_id == key:
     number_of_questions = int(number_of_questions)
     
     threads = []
-    all_questions = []
-    for i in range(0, number_of_questions):
-        unfiltered = input("What's the question? ")
-        all_questions.append(unfiltered)
+    all_questions = [[]]
+    for i in range(0, int(number_of_questions / 5)):
+        all_questions.append([])
+
+
+    for i in range(0 , math.ceil(number_of_questions / 5)):
+
+        for j in range(0, 5):
+            if i*5 + j +1 > number_of_questions:
+                break
+            unfiltered = input("What's the question? ")
+            all_questions[i].append(unfiltered)
+
     # initializes the webdriver
     # options = webdriver.ChromeOptions()
     # options.add_argument('ignore-certificate-errors-spki-list')
@@ -178,15 +206,15 @@ if current_machine_id == key:
     # # options.add_argument("--headless")
     # #options.add_argument('--disable_gpu')
     # driver = webdriver.Chrome(executable_path="./chromedriver", options=options)
+    for i, questions in enumerate(all_questions):
+        for j, question in enumerate(questions) :
+            process = Thread(target=question_answer, args=[i*5 +j , question])
+            process.start()
+            threads.append(process)
+        for process in threads:
+            process.join()
 
-    for i, question in enumerate(all_questions) :
-        process = Thread(target=question_answer, args=[i , question])
-        process.start()
-        threads.append(process)
-    for process in threads:
-        process.join()
-
-    os.system('cls')
+    # os.system('cls')
     print('done !')
     temp_result = []
     # for i in range(0, len(total_results) - 1):
@@ -199,20 +227,10 @@ if current_machine_id == key:
     f = open("answers.txt", "w")
     for results in total_results:
         for result in results:
-            print(result, file=f)
+            if result != [[]]:
+                print(result, file=f)
     f.close()
     exit()
-    # os.system('cls')
-    # for result in results:
-    #     if result != [[]]:
-    #         print(result)
-    #         print()
 
 # https://testdriven.io/blog/building-a-concurrent-web-scraper-with-python-and-selenium/
 # https://stackoverflow.com/questions/47543795/what-is-the-fastest-way-to-open-urls-in-new-tabs-via-selenium-python
-
-
-
-
-
-# 1. Open tabs 

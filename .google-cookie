@@ -1,9 +1,5 @@
 #LWP-Cookies-2.0
-<<<<<<< HEAD
-Set-Cookie3: 1P_JAR="2020-08-29-18"; path="/"; domain=".google.com"; path_spec; domain_dot; secure; expires="2020-09-28 18:58:39Z"; version=0
-=======
-Set-Cookie3: 1P_JAR="2020-08-26-02"; path="/"; domain=".google.com"; path_spec; domain_dot; secure; expires="2020-09-25 02:52:04Z"; version=0
->>>>>>> parent of 9e37275... did multithreading using multiple webdrivers. going to test with only
+Set-Cookie3: 1P_JAR="2020-08-31-21"; path="/"; domain=".google.com"; path_spec; domain_dot; secure; expires="2020-09-30 21:37:36Z"; version=0
 Set-Cookie3: NID="204=DjEmKRkXQd6q9zrySMnLu_pMWE9nyl8O02EPzWpbBDa4AngQnxR5MtdKL0AUOaLh8VSnvwQgLbOxD64qQin2YpgGd6rL1bOYkNBVxKM6vCzB1sorg_Dv6S5u6ZzAq7QomFntPy8BJzZPM3mNyH017cTMwjQmribt2rkTXg5_POM"; path="/"; domain=".google.com"; path_spec; domain_dot; expires="2021-02-07 03:19:44Z"; HttpOnly=None; version=0
 Set-Cookie3: CGIC=""; path="/complete/search"; domain=".google.com"; path_spec; domain_dot; expires="2021-02-04 03:19:44Z"; HttpOnly=None; version=0
 Set-Cookie3: CGIC=""; path="/search"; domain=".google.com"; path_spec; domain_dot; expires="2021-02-04 03:19:44Z"; HttpOnly=None; version=0
