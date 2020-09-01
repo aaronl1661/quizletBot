@@ -1,4 +1,3 @@
-key = '4C4C4544-0058-4410-8054-B7C04F375631'
 from selenium import webdriver
 from googlesearch import search
 from bs4 import BeautifulSoup
